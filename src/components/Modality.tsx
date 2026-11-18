@@ -1,13 +1,40 @@
+import { site } from "@/lib/site";
+
 export function Modality() {
   return (
     <section id="modalidad" className="section">
       <div className="container">
         <div className="section__head">
-          <h2 className="section__title">Consulta presencial en El Salvador.</h2>
+          <h2 className="section__title">Consulta presencial en San Salvador.</h2>
           <p className="section__lead">
-            La atención es en persona, en un consultorio privado. La dirección exacta y los horarios disponibles se
-            comparten por WhatsApp al confirmar tu cita.
+            La atención es en persona, en un consultorio privado y únicamente con cita previa.
           </p>
+        </div>
+
+        <div className="visit-info">
+          <div className="visit-info__block">
+            <h3>Horario de consulta</h3>
+            <dl className="hours">
+              {site.hours.map((h) => (
+                <div key={h.day} className="hours__row">
+                  <dt>{h.day}</dt>
+                  <dd>{h.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="visit-info__block">
+            <h3>Dirección</h3>
+            <address className="address">
+              {site.address.lines.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </address>
+            <a className="btn btn--link" href={site.address.mapsUrl} target="_blank" rel="noopener noreferrer">
+              Ver en Google Maps
+            </a>
+          </div>
         </div>
 
         <div className="modality">
@@ -15,7 +42,7 @@ export function Modality() {
             <h3>Antes de tu cita</h3>
             <ol className="modality__list modality__list--steps">
               <li>Envías tu solicitud por WhatsApp desde este sitio.</li>
-              <li>Confirmamos contigo el día, la hora y la dirección.</li>
+              <li>Confirmamos contigo el día y la hora.</li>
               <li>
                 Llegas unos minutos antes. Si los tienes, trae exámenes recientes y la lista de medicamentos que tomas.
               </li>

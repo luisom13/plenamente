@@ -26,9 +26,13 @@ export function buildBookingMessage(data: BookingData): string {
     `Hola, ${site.doctor}. Me gustaría agendar una cita.`,
     "",
     `*Tipo de consulta:* ${data.type}`,
-    `*Días de preferencia:* ${data.days.length ? data.days.join(", ") : "Flexible"}`,
-    `*Horario de preferencia:* ${data.slot}`,
+    `*Días de preferencia:* ${site.hours
+      .filter((h) => data.days.includes(h.day))
+      .map((h) => `${h.day} (${h.label})`)
+      .join(", ")}`,
   ];
+
+  if (data.slot) lines.push(`*Preferencia el sábado:* ${data.slot}`);
 
   if (data.reason) lines.push(`*Motivo general:* ${data.reason}`);
   if (data.note.trim()) lines.push(`*Comentario:* ${data.note.trim()}`);

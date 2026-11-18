@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { bookingOptions } from "@/lib/site";
+import { bookingOptions, site } from "@/lib/site";
 import { buildBookingMessage, buildWhatsAppUrl, emptyBooking, type BookingData } from "@/lib/whatsapp";
 
 const STEP_TITLES = [
   "¿Qué tipo de consulta necesitas?",
-  "¿Qué días y horario te convienen?",
+  "¿Qué día te conviene?",
   "¿Quieres contarnos el motivo?",
   "¿Cómo te contactamos?",
   "Revisa tu mensaje",
@@ -18,7 +18,7 @@ const NOTE_MAX = 200;
 /** Devuelve el mensaje de error del paso, o una cadena vacía si puede avanzar. */
 function validate(step: number, data: BookingData): string {
   if (step === 0 && !data.type) return "Elige el tipo de consulta para continuar.";
-  if (step === 1 && !data.slot) return "Elige un horario de preferencia para continuar.";
+  if (step === 1 && !data.days.length) return "Elige al menos un día para continuar.";
   if (step === 3) {
     if (data.name.trim().length < 2) return "Escribe tu nombre para continuar.";
     if (data.phone.replace(/\D/g, "").length < 8) return "Escribe un teléfono de al menos 8 dígitos.";
@@ -54,8 +54,11 @@ export function BookingDialog({ isOpen, onClose }: Props) {
     setError("");
   };
 
-  const toggleDay = (day: string) =>
-    update({ days: data.days.includes(day) ? data.days.filter((d) => d !== day) : [...data.days, day] });
+  const toggleDay = (day: string) => {
+    const days = data.days.includes(day) ? data.days.filter((d) => d !== day) : [...data.days, day];
+    // La franja solo aplica al sábado: se limpia si se desmarca.
+    update({ days, slot: days.includes("Sábado") ? data.slot : "" });
+  };
 
   const next = () => {
     const message = validate(step, data);
@@ -148,33 +151,38 @@ export function BookingDialog({ isOpen, onClose }: Props) {
             <>
               <fieldset className="booking__fieldset">
                 <legend className="booking__legend">
-                  Días <span className="booking__optional">Elige los que te sirvan, o ninguno si eres flexible</span>
+                  Días de consulta <span className="booking__optional">Puedes elegir más de uno</span>
                 </legend>
-                <div className="choice-row">
-                  {bookingOptions.days.map((day) => (
-                    <label key={day} className="choice">
-                      <input type="checkbox" checked={data.days.includes(day)} onChange={() => toggleDay(day)} />
-                      <span className="choice__box">{day}</span>
-                    </label>
-                  ))}
-                </div>
+                {site.hours.map((h) => (
+                  <label key={h.day} className="choice choice--block">
+                    <input type="checkbox" checked={data.days.includes(h.day)} onChange={() => toggleDay(h.day)} />
+                    <span className="choice__box">
+                      <span className="choice__label">{h.day}</span>
+                      <span className="choice__hint">{h.label}</span>
+                    </span>
+                  </label>
+                ))}
               </fieldset>
-              <fieldset className="booking__fieldset">
-                <legend className="booking__legend">Horario</legend>
-                <div className="choice-row">
-                  {bookingOptions.slots.map((slot) => (
-                    <label key={slot} className="choice">
-                      <input
-                        type="radio"
-                        name="slot"
-                        checked={data.slot === slot}
-                        onChange={() => update({ slot })}
-                      />
-                      <span className="choice__box">{slot}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
+              {data.days.includes("Sábado") && (
+                <fieldset className="booking__fieldset">
+                  <legend className="booking__legend">
+                    El sábado, prefiero <span className="booking__optional">Opcional</span>
+                  </legend>
+                  <div className="choice-row">
+                    {bookingOptions.saturdaySlots.map((slot) => (
+                      <label key={slot} className="choice">
+                        <input
+                          type="radio"
+                          name="slot"
+                          checked={data.slot === slot}
+                          onChange={() => update({ slot })}
+                        />
+                        <span className="choice__box">{slot}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
               <p className="booking__note">
                 La fecha y la hora exactas se confirman por WhatsApp según la disponibilidad de la agenda.
               </p>

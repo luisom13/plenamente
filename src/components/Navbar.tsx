@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { navLinks, site } from "@/lib/site";
+import { asset, navLinks, site } from "@/lib/site";
 import { BookingButton } from "./Booking";
 
 export function Navbar() {
@@ -12,7 +12,7 @@ export function Navbar() {
     <header className="nav">
       <div className="container nav__inner">
         <a className="brand" href="#inicio" aria-label={`${site.name}, ${site.doctor}. Ir al inicio`}>
-          <Image src="/images/isotipo-terracota.png" alt="" width={240} height={161} className="brand__mark" priority />
+          <Image src={asset("/images/isotipo-terracota.png")} alt="" width={240} height={161} className="brand__mark" priority />
           <span className="brand__text">
             <span className="brand__name">{site.name}</span>
             <span className="brand__doctor">{site.doctor}</span>

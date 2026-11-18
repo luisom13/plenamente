@@ -703,6 +703,59 @@ a {
 }
 
 /* 5. Modalidad ------------------------------------------------------------ */
+.visit-info {
+  display: grid;
+  gap: 40px 56px;
+  margin-bottom: clamp(56px, 8vw, 88px);
+  padding: clamp(28px, 5vw, 48px);
+  background: var(--arena);
+  border-radius: var(--radius);
+}
+
+.visit-info__block h3 {
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.625rem;
+  line-height: 1.2;
+}
+
+.hours__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--linea);
+}
+
+.hours__row dt {
+  font-weight: 600;
+}
+
+.hours__row dd {
+  color: var(--tinta-suave);
+  text-align: right;
+}
+
+.address {
+  display: grid;
+  margin-bottom: 16px;
+  font-style: normal;
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+.visit-info .btn--link {
+  min-height: 44px;
+  padding-inline: 0;
+}
+
+@media (min-width: 760px) {
+  .visit-info {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .modality {
   display: grid;
   gap: 40px 56px;
@@ -912,6 +965,13 @@ a {
 
 .footer__col a:hover {
   text-decoration-thickness: 2px;
+}
+
+.footer__address,
+.footer__hours {
+  display: grid;
+  margin-top: 10px;
+  font-style: normal;
 }
 
 .footer__notice p {

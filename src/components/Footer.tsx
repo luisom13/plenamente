@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { navLinks, site } from "@/lib/site";
+import { asset, navLinks, site } from "@/lib/site";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const greeting = `Hola, ${site.doctor}. Quisiera más información sobre la consulta.`;
@@ -10,7 +10,7 @@ export function Footer() {
       <div className="container footer__grid">
         <div className="footer__brand">
           <Image
-            src="/images/logo-crema.png"
+            src={asset("/images/logo-crema.png")}
             alt={`${site.name}, ${site.doctor}`}
             width={640}
             height={666}
@@ -20,15 +20,28 @@ export function Footer() {
 
         <div className="footer__col">
           <h2>Consulta</h2>
-          <p>
-            {site.specialty}
-            <br />
-            Atención presencial en {site.location}
+          <p>{site.specialty}</p>
+          <address className="footer__address">
+            {site.address.lines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </address>
+          <p className="footer__hours">
+            {site.hours.map((h) => (
+              <span key={h.day}>
+                {h.day}: {h.label}
+              </span>
+            ))}
           </p>
           <ul>
             <li>
               <a href={buildWhatsAppUrl(greeting)} target="_blank" rel="noopener noreferrer">
                 Escribir por WhatsApp
+              </a>
+            </li>
+            <li>
+              <a href={site.address.mapsUrl} target="_blank" rel="noopener noreferrer">
+                Ver en Google Maps
               </a>
             </li>
             <li>

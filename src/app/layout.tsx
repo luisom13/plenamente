@@ -70,6 +70,14 @@ const jsonLd = {
   url: site.url,
   image: `${site.url}/og.jpg`,
   areaServed: { "@type": "Country", name: "El Salvador" },
+  telephone: `+${site.whatsappNumber}`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Col. Campestre, Calle A No. 13-76, Ent. Av. Juan Ramón Molina",
+    addressLocality: "San Salvador",
+    addressCountry: "SV",
+  },
+  openingHours: ["Tu 07:00-09:00", "Th 07:00-09:00", "Sa 07:00-15:00"],
   sameAs: [site.instagram.url],
 };
 

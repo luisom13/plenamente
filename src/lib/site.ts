@@ -21,7 +21,24 @@ export const site = {
     handle: "@plenamente.drabarriere",
     url: "https://www.instagram.com/plenamente.drabarriere/",
   },
+
+  address: {
+    lines: ["Col. Campestre, Calle A No. 13-76", "Ent. Av. Juan Ramón Molina", "San Salvador, El Salvador"],
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent("Col. Campestre Calle A 13-76, Av. Juan Ramón Molina, San Salvador, El Salvador"),
+  },
+
+  /** Horario de consulta. Se usa en la página, el formulario de cita y los datos para buscadores. */
+  hours: [
+    { day: "Martes", from: "07:00", to: "09:00", label: "7:00 a 9:00 a. m." },
+    { day: "Jueves", from: "07:00", to: "09:00", label: "7:00 a 9:00 a. m." },
+    { day: "Sábado", from: "07:00", to: "15:00", label: "7:00 a. m. a 3:00 p. m." },
+  ],
 } as const;
+
+/** Antepone el basePath (GitHub Pages sirve el sitio en /plenamente) a rutas de /public. */
+export const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
 
 export const navLinks = [
   { href: "#sobre-mi", label: "Sobre mí" },
@@ -29,14 +46,14 @@ export const navLinks = [
   { href: "#preguntas", label: "Preguntas frecuentes" },
 ] as const;
 
-// Opciones del flujo de cita. Ajusta días y horarios a la agenda real.
+// Opciones del flujo de cita. Los días salen de site.hours.
 export const bookingOptions = {
   types: [
     { value: "Primera vez", hint: "Aún no has tenido consulta con la Dra. Barriere." },
     { value: "Seguimiento", hint: "Ya eres paciente y quieres continuar tu proceso." },
   ],
-  days: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"],
-  slots: ["Por la mañana", "Por la tarde", "Sin preferencia"],
+  /** Solo el sábado tiene horario suficiente para elegir franja. */
+  saturdaySlots: ["Por la mañana", "Al mediodía o por la tarde", "Sin preferencia"],
   reasons: [
     "Ansiedad o estrés",
     "Estado de ánimo",

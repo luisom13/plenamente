@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/site";
 import { BookingButton } from "./Booking";
 
 export function Hero() {
@@ -8,7 +9,7 @@ export function Hero() {
         <div className="hero__copy">
           <h1 className="hero__title">Cuidar tu mente también es cuidar tu vida.</h1>
           <p className="hero__lead">
-            Consulta psiquiátrica presencial en El Salvador con la Dra. Natalia Barriere. Un espacio sereno y sin
+            Consulta psiquiátrica presencial en San Salvador con la Dra. Natalia Barriere. Un espacio sereno y sin
             juicios para entender lo que sientes y avanzar, con respaldo científico, hacia una vida más plena.
           </p>
           <div className="hero__actions">
@@ -22,7 +23,7 @@ export function Hero() {
         <div className="hero__visual">
           <div className="hero__frame">
             <Image
-              src="/images/dra-natalia-barriere.jpg"
+              src={asset("/images/dra-natalia-barriere.jpg")}
               alt="La Dra. Natalia Barriere sonríe sentada en un sofá claro, en un espacio luminoso"
               fill
               priority
